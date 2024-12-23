@@ -139,3 +139,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 #Auth redirects
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+# Emails
+import os 
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+else:
+    #Email for production
+    pass
