@@ -59,15 +59,27 @@
               {% endfor %}
             </div>
             <!-- Aquí crearemos el formulario -->
-             <button id="testBtn">Peticion asincrona de prueba</button>
+             <textarea id="content" class="form-control mb-2" rows="2" placeholder="Escribe tu mensaje aqui"></textarea>
+             <button id="send" class="btn btn-primary btn-sm btn-block" disabled>Peticion asincrona de prueba</button>
              <script>
-              var testBtn = document.getElementById('testBtn');
-              testBtn.addEventListener('click', function(){
-                var content = "Mensaje de prueba"
-                const url = "{% url 'messenger:add' thread.pk %}" + "?content=" + content;
-                fetch(url).then(response => response.json()).then(function(data){
-                  alert(data.created)
-                })
+              var send = document.getElementById('send');
+              send.addEventListener('click', function(){
+                var content = encodeURIComponent(document.getElementById('content').value);
+                if (content.length > 0) {
+                  const url = "{% url 'messenger:add' thread.pk %}" + "?content=" + content;
+                  fetch(url, {"credentials":"include"}).then(response => response.json()).then(function(data){
+                    alert(data.created)
+                  })
+                }
+              })
+
+              var content = document.getElementById('content');
+              content.addEventListener("keyup", function(){
+                if (!this.checkVisibility() || !this.value){
+                  send.disabled = true;
+                } else {
+                  send.disabled = false;
+                }
               })
              </script>
           </div>
